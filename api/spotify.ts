@@ -1,4 +1,4 @@
-import { getSpotifyData } from "./spotifyCore";
+import { getSpotifyData } from "./spotifyCore.js";
 
 // Vercel serverless function. Reads server-side env vars (set in the Vercel
 // dashboard): SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN.
