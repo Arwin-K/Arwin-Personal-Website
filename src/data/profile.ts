@@ -1,0 +1,42 @@
+export const profile = {
+  name: "Arwin Karir",
+  tagline: "Computer Engineering @ University of Toronto",
+  location: "Toronto, ON, Canada",
+  email: "karirarwin@gmail.com",
+  phone: "647-741-7010",
+  githubUser: "Arwin-K",
+  github: "https://github.com/Arwin-K",
+  linkedin: "https://linkedin.com/in/arwin-karir",
+  linkedinHandle: "arwin-karir",
+  blurb:
+    "Hey, I'm Arwin - a Computer Engineering student at the University of Toronto (PEY Co-op) who likes building things that ship. I work across full-stack web, machine learning, and edge/computer-vision systems. Off the keyboard you'll find me on the basketball court, behind a camera, or buried in a comic.",
+  education: {
+    school: "University of Toronto",
+    degree: "BASc in Computer Engineering (PEY Co-op)",
+    location: "Toronto, ON",
+    dates: "Sept. 2025 - May 2030",
+  },
+  skills: {
+    Languages: ["Python", "Swift", "C/C++", "JavaScript/TypeScript", "HTML/CSS", "MATLAB", "SQL"],
+    "Web / Full-Stack": ["Next.js", "React", "Node.js", "Prisma", "PostgreSQL", "REST APIs"],
+    "Testing / Quality": [
+      "Playwright",
+      "Playwright MCP",
+      "End-to-end testing",
+      "API testing",
+      "Console/network monitoring",
+      "Cross-browser validation",
+    ],
+    "ML / Data": [
+      "PyTorch",
+      "scikit-learn",
+      "pandas",
+      "NumPy",
+      "Transformer embeddings",
+      "CNNs",
+      "F1/precision/recall",
+    ],
+    "Mobile / CV / Edge": ["ARKit", "SwiftUI", "CoreML", "Vision", "ONNX Runtime", "OpenCV", "Raspberry Pi"],
+    "Cloud / DevOps": ["AWS (SES, S3, SageMaker, EC2)", "Azure", "Cron/scheduled jobs", "Git/GitHub", "Linux", "Docker-style workflows"],
+  },
+} as const;
