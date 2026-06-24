@@ -1433,16 +1433,77 @@ a {
 
 /* ---------- Trash ---------- */
 .trash {
-  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  gap: 6px;
 }
 
-.trash__big {
-  font-size: 72px;
+.trash__title {
+  margin: 0;
+}
+
+.trash__hint {
+  margin: 0 0 6px;
+}
+
+.trash__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+}
+
+/* Text document viewer (used by the Trash file) */
+.txtfile {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  height: 100%;
+}
+
+.txtfile__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.txtfile__back {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.txtfile__name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.txtfile__spacer {
+  width: 56px;
+  flex-shrink: 0;
+}
+
+.txtfile__body {
+  flex: 1;
+  margin: 0;
+  padding: 16px 18px;
+  overflow: auto;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--panel-2);
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 /* ---------- Music player ---------- */
