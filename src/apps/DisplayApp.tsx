@@ -1,9 +1,8 @@
-import { wallpapers } from "../data/wallpapers";
 import { useWallpaper } from "../os/WallpaperContext";
 import { useTheme } from "../os/ThemeContext";
 
 export function DisplayApp() {
-  const { wallpaperId, setWallpaperId } = useWallpaper();
+  const { wallpaperId, setWallpaperId, options } = useWallpaper();
   const { theme, setTheme } = useTheme();
 
   return (
@@ -12,9 +11,9 @@ export function DisplayApp() {
         <span className="display__legend">Display</span>
 
         <div className="display__row">
-          <span className="display__label">Desktop background</span>
+          <span className="display__label">Wallpaper</span>
           <div className="bgpicker">
-            {wallpapers.map((w) => (
+            {options.map((w) => (
               <button
                 key={w.id}
                 className={`bgpicker__item ${wallpaperId === w.id ? "bgpicker__item--on" : ""}`}
@@ -51,8 +50,7 @@ export function DisplayApp() {
       </div>
 
       <p className="muted display__note">
-        Pick a wallpaper above — your choice is saved for next time. Right-click the desktop anytime
-        to reopen this.
+        Pick a wallpaper above — your choice is saved for next time.
       </p>
     </div>
   );

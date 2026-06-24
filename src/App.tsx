@@ -9,7 +9,9 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <WallpaperProvider>{isMobile ? <PhoneOS /> : <Desktop />}</WallpaperProvider>
+      <WallpaperProvider mode={isMobile ? "phone" : "desktop"}>
+        {isMobile ? <PhoneOS /> : <Desktop />}
+      </WallpaperProvider>
     </ThemeProvider>
   );
 }
