@@ -963,6 +963,22 @@ a {
   flex-shrink: 0;
 }
 
+/* Small pixel icon shown inline before a heading/label. */
+.inlineico {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-right: 7px;
+  position: relative;
+  top: -1px;
+}
+
+.repocard__star {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
 .contact__label {
   display: block;
   font-size: 11px;

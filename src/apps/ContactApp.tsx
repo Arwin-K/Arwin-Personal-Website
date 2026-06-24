@@ -4,7 +4,7 @@ import { Icon } from "../os/Icon";
 export function ContactApp() {
   return (
     <div className="app contact">
-      <h2 className="contact__title">Let's build something 👋</h2>
+      <h2 className="contact__title">Let's build something</h2>
       <p className="muted">
         Open to internships, collaborations, and pickup games. The fastest way to reach me is email.
       </p>

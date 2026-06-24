@@ -57,7 +57,12 @@ export function ProjectsApp() {
         ))}
       </div>
 
-      <h3 className="folder__section">📡 Live from GitHub</h3>
+      <h3 className="folder__section">
+        <span className="inlineico">
+          <Icon name="github" size={18} />
+        </span>
+        Live from GitHub
+      </h3>
       {loading && <p className="muted">Loading repositories…</p>}
       {error && <p className="muted">Couldn't reach GitHub right now. Try the GitHub app or my profile directly.</p>}
       <div className="repolist">
@@ -65,7 +70,9 @@ export function ProjectsApp() {
           <a key={r.id} className="repocard" href={r.html_url} target="_blank" rel="noreferrer">
             <div className="repocard__top">
               <span className="repocard__name">{r.name}</span>
-              <span className="repocard__star">⭐ {r.stargazers_count}</span>
+              <span className="repocard__star">
+                <Icon name="star" size={13} /> {r.stargazers_count}
+              </span>
             </div>
             {r.description && <p className="repocard__desc">{r.description}</p>}
             <div className="repocard__meta">

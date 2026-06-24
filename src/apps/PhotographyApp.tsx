@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { photography } from "../data/hobbies";
+import { Icon } from "../os/Icon";
 
 export function PhotographyApp() {
   const [active, setActive] = useState<number | null>(null);
@@ -8,7 +9,12 @@ export function PhotographyApp() {
   return (
     <div className="app hobby photo">
       <div className="hobby__head">
-        <h2>📷 Photography</h2>
+        <h2>
+          <span className="inlineico">
+            <Icon name="photography" size={20} />
+          </span>
+          Photography
+        </h2>
         <span className="badge">{photography.gear}</span>
       </div>
 

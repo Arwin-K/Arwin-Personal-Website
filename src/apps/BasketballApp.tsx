@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { basketball } from "../data/hobbies";
+import { Icon } from "../os/Icon";
 
 const BEST_KEY = "arwinos:bball-best";
 // Sweet spot is centered at 50. Distance bands decide the outcome.
@@ -14,7 +15,7 @@ export function BasketballApp() {
     const saved = typeof localStorage !== "undefined" ? localStorage.getItem(BEST_KEY) : null;
     return saved ? Number(saved) : 0;
   });
-  const [msg, setMsg] = useState("Hit the sweet spot to score 🏀");
+  const [msg, setMsg] = useState("Hit the sweet spot to score");
   const [flash, setFlash] = useState<"swish" | "make" | "miss" | null>(null);
   const [shot, setShot] = useState<{ id: number; result: "swish" | "make" | "miss" } | null>(null);
   const shotIdRef = useRef(0);
@@ -114,7 +115,12 @@ export function BasketballApp() {
   return (
     <div className="app hobby bball">
       <div className="hobby__head">
-        <h2>🏀 Basketball</h2>
+        <h2>
+          <span className="inlineico">
+            <Icon name="basketball" size={20} />
+          </span>
+          Basketball
+        </h2>
         <span className="badge">{basketball.favoriteTeam}</span>
       </div>
 

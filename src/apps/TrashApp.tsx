@@ -25,7 +25,12 @@ export function TrashApp() {
 
   return (
     <div className="app trash">
-      <h2 className="trash__title">🗑️ Trash</h2>
+      <h2 className="trash__title">
+        <span className="inlineico">
+          <Icon name="trash" size={20} />
+        </span>
+        Trash
+      </h2>
       <p className="muted trash__hint">One item — probably best left deleted.</p>
       <div className="trash__list">
         <button className="fileitem" onClick={() => setOpen(true)}>

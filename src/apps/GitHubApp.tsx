@@ -1,5 +1,6 @@
 import { useGitHubUser, useGitHubRepos, languageBreakdown } from "../hooks/useGitHub";
 import { profile } from "../data/profile";
+import { Icon } from "../os/Icon";
 
 export function GitHubApp() {
   const { user, loading, error } = useGitHubUser();
@@ -85,7 +86,9 @@ export function GitHubApp() {
             <a key={r.id} className="repocard" href={r.html_url} target="_blank" rel="noreferrer">
               <div className="repocard__top">
                 <span className="repocard__name">{r.name}</span>
-                <span className="repocard__star">⭐ {r.stargazers_count}</span>
+                <span className="repocard__star">
+                  <Icon name="star" size={13} /> {r.stargazers_count}
+                </span>
               </div>
               {r.description && <p className="repocard__desc">{r.description}</p>}
               {r.language && <span className="dotlang">● {r.language}</span>}
