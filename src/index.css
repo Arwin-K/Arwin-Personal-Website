@@ -463,6 +463,18 @@ a {
   height: 100%;
 }
 
+/* Extra breathing room at the bottom of these scrollable apps. The auto height
+   lets the box grow with its content so the bottom padding lands after the last
+   line (instead of at the 100%-height fold) when the window scrolls. */
+.app.about,
+.app.github,
+.app.bball,
+.app.contact {
+  height: auto;
+  min-height: 100%;
+  padding-bottom: 24px;
+}
+
 .muted {
   color: var(--muted);
 }
@@ -941,6 +953,14 @@ a {
 .contact__row:hover {
   border-color: var(--accent);
   background: var(--hover);
+}
+
+.contact__ic {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
 }
 
 .contact__label {

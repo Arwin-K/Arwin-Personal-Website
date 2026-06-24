@@ -8,6 +8,10 @@ export const profile = {
   github: "https://github.com/Arwin-K",
   linkedin: "https://linkedin.com/in/arwin-karir",
   linkedinHandle: "arwin-karir",
+  x: "https://x.com/ArwinKarir51596",
+  xHandle: "ArwinKarir51596",
+  instagram: "https://www.instagram.com/arwin_karir/",
+  instagramHandle: "arwin_karir",
   blurb:
     "Hey, I'm Arwin - a Computer Engineering student at the University of Toronto (PEY Co-op) who likes building things that ship. I work across full-stack web, machine learning, and edge/computer-vision systems. Off the keyboard you'll find me on the basketball court, behind a camera, or buried in a comic.",
   education: {
