@@ -154,17 +154,13 @@ a {
 /* ---------- Desktop icons ---------- */
 .desktop__icons {
   position: absolute;
-  top: 44px;
-  left: 14px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  max-height: calc(100% - 150px);
-  gap: 6px;
+  inset: 0;
   z-index: 1;
+  pointer-events: none;
 }
 
 .desktop-icon {
+  position: absolute;
   width: 92px;
   padding: 10px 6px;
   display: flex;
@@ -175,6 +171,15 @@ a {
   border: 1px solid transparent;
   border-radius: 10px;
   color: #fff;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+}
+
+.desktop-icon--dragging {
+  cursor: grabbing;
+  opacity: 0.85;
+  z-index: 2;
 }
 
 .desktop-icon:hover {
@@ -723,6 +728,22 @@ a {
 
 .doc__list li {
   margin-bottom: 8px;
+}
+
+/* ---------- Work (fully expanded) ---------- */
+.work__intro {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.work__item {
+  padding: 16px 0 4px;
+  border-top: 1px solid var(--line);
+}
+.work__item:first-of-type {
+  border-top: none;
+  padding-top: 0;
 }
 
 /* ---------- GitHub ---------- */
@@ -2139,22 +2160,130 @@ a {
   align-content: start;
   overflow-y: auto;
   flex: 1;
-  padding-bottom: 12px;
+  margin-top: 4px;
+  padding: 12px 6px 12px;
   -webkit-overflow-scrolling: touch;
 }
 
 .phone__appbtn {
-  background: none;
-  border: none;
-  padding: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
   color: #fff;
 }
-.phone__appbtn:active .phone__tile {
+.phone__tilewrap {
+  position: relative;
+  display: inline-flex;
+}
+.phone__tilebtn {
+  display: inline-flex;
+  cursor: pointer;
+}
+.phone__tilebtn:active .phone__tile {
   transform: scale(0.9);
+}
+
+.phone__appbtn--edit {
+  animation: phoneJiggle 0.3s ease-in-out infinite;
+}
+.phone__appbtn--edit:nth-child(2n) {
+  animation-delay: -0.15s;
+}
+.phone__appbtn--edit:nth-child(3n) {
+  animation-delay: -0.08s;
+}
+
+@keyframes phoneJiggle {
+  0% {
+    transform: rotate(-1.8deg);
+  }
+  50% {
+    transform: rotate(1.8deg);
+  }
+  100% {
+    transform: rotate(-1.8deg);
+  }
+}
+
+.phone__delbtn {
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #eef0f6;
+  border: none;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
+  z-index: 3;
+}
+.phone__delbtn::before {
+  content: "";
+  width: 10px;
+  height: 2.5px;
+  border-radius: 2px;
+  background: #1d1f2b;
+}
+
+.phone__done {
+  background: rgba(255, 255, 255, 0.92);
+  color: #1d1f2b;
+  border: none;
+  border-radius: 12px;
+  padding: 4px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.phone__alert-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  animation: phoneFade 0.15s ease;
+}
+
+@keyframes phoneFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.phone__alert {
+  width: 240px;
+  background: var(--panel);
+  color: var(--ink);
+  border-radius: 16px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+.phone__alert-title {
+  padding: 24px 16px 22px;
+  font-size: 22px;
+  font-weight: 700;
+}
+.phone__alert-ok {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-top: 1px solid var(--line);
+  background: none;
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .phone__tile {

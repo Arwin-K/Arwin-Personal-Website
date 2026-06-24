@@ -1,18 +1,14 @@
-import { useState } from "react";
 import { work } from "../data/work";
 import { Icon } from "../os/Icon";
 
 export function WorkApp() {
-  const [selected, setSelected] = useState<string | null>(null);
-  const item = work.find((w) => w.id === selected);
-
-  if (item) {
-    return (
-      <div className="app folder">
-        <button className="folder__back" onClick={() => setSelected(null)}>
-          ← Work Experience
-        </button>
-        <div className="doc">
+  return (
+    <div className="app work">
+      <p className="work__intro">
+        Roles I've held, with the full rundown of what I worked on at each.
+      </p>
+      {work.map((item) => (
+        <article key={item.id} className="doc work__item">
           <div className="doc__head">
             <Icon name={item.icon} size={30} />
             <div>
@@ -28,23 +24,8 @@ export function WorkApp() {
               <li key={i}>{b}</li>
             ))}
           </ul>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="app folder">
-      <p className="folder__hint">Double-click a role to open the full write-up.</p>
-      <div className="folder__grid">
-        {work.map((w) => (
-          <button key={w.id} className="fileitem" onClick={() => setSelected(w.id)}>
-            <Icon name={w.icon} size={40} />
-            <span className="fileitem__name">{w.company}</span>
-            <span className="fileitem__meta">{w.dates}</span>
-          </button>
-        ))}
-      </div>
+        </article>
+      ))}
     </div>
   );
 }
