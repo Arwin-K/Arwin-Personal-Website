@@ -1883,3 +1883,348 @@ a {
     width: 210px;
   }
 }
+
+/* ---------- iPhone-style mobile UI ---------- */
+.phone {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.phone__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.15) 35%, rgba(0, 0, 0, 0.45) 100%);
+  pointer-events: none;
+}
+
+/* Status bar */
+.phone__status {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(10px, env(safe-area-inset-top)) 26px 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.phone__status--dark {
+  color: var(--ink);
+}
+
+.phone__status-time {
+  letter-spacing: 0.3px;
+}
+
+.phone__status-icons {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.phone__sig {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 11px;
+}
+.phone__sig i {
+  width: 3px;
+  background: currentColor;
+  border-radius: 1px;
+}
+.phone__sig i:nth-child(1) { height: 4px; }
+.phone__sig i:nth-child(2) { height: 6px; }
+.phone__sig i:nth-child(3) { height: 8px; }
+.phone__sig i:nth-child(4) { height: 11px; }
+
+.phone__wifi {
+  font-size: 15px;
+  transform: scale(1.5, 1);
+  opacity: 0.9;
+}
+
+.phone__batt {
+  position: relative;
+  width: 24px;
+  height: 12px;
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+  opacity: 0.9;
+}
+.phone__batt::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 3px;
+  width: 2px;
+  height: 4px;
+  background: currentColor;
+  border-radius: 0 1px 1px 0;
+}
+.phone__batt-fill {
+  position: absolute;
+  inset: 1.5px;
+  width: 70%;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+/* Home screen */
+.phone__home {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 18px 0;
+  min-height: 0;
+}
+
+.phone__clock {
+  text-align: center;
+  margin: 10px 0 14px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+}
+.phone__clock-date {
+  font-size: 15px;
+  font-weight: 600;
+  opacity: 0.95;
+}
+.phone__clock-time {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+
+/* Widgets */
+.phone__widget {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border-radius: 20px;
+  background: rgba(20, 24, 38, 0.45);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+  text-decoration: none;
+}
+.phone__widget-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #1db954, #155e34);
+}
+.phone__widget-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.phone__widget-note {
+  font-size: 22px;
+}
+.phone__widget-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.phone__widget-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.85;
+}
+.phone__widget-title {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.phone__widget-sub {
+  font-size: 12px;
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* App grid */
+.phone__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px 8px;
+  align-content: start;
+  overflow-y: auto;
+  flex: 1;
+  padding-bottom: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.phone__appbtn {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+}
+.phone__appbtn:active .phone__tile {
+  transform: scale(0.9);
+}
+
+.phone__tile {
+  width: 58px;
+  height: 58px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+  transition: transform 0.12s ease;
+}
+
+.phone__applabel {
+  font-size: 11.5px;
+  font-weight: 500;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  max-width: 72px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dock */
+.phone__dock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 6px -6px 0;
+  padding: 12px 12px max(12px, env(safe-area-inset-bottom));
+  border-radius: 28px 28px 0 0;
+  background: rgba(20, 24, 38, 0.4);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+.phone__dock .phone__applabel {
+  display: none;
+}
+
+/* Home indicator bar */
+.phone__bar {
+  position: relative;
+  z-index: 2;
+  height: 5px;
+  width: 134px;
+  margin: 6px auto max(6px, env(safe-area-inset-bottom));
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+}
+
+/* Full-screen app view */
+.phone__app {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  color: var(--ink);
+  animation: phoneAppIn 0.32s cubic-bezier(0.22, 0.8, 0.24, 1);
+}
+
+@keyframes phoneAppIn {
+  from {
+    transform: translateY(100%);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.phone__appbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 12px 10px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  flex-shrink: 0;
+}
+.phone__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 4px 0;
+}
+.phone__back-chev {
+  font-size: 26px;
+  line-height: 1;
+  margin-top: -2px;
+}
+.phone__apptitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.phone__appspacer {
+  width: 52px;
+}
+
+.phone__appbody {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+}
+.phone__appbody .app {
+  height: auto;
+  min-height: 100%;
+}
+
+.phone__bar--btn {
+  border: none;
+  cursor: pointer;
+  background: var(--ink);
+  opacity: 0.35;
+}
+
+/* Make embedded app content breathe on small screens */
+.phone__appbody .resume__frame {
+  min-height: 70vh;
+}
+.phone__appbody .about__links,
+.phone__appbody .display__row {
+  flex-wrap: wrap;
+}
