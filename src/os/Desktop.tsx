@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { APPS, APP_MAP } from "../apps/registry";
 import { useWindowManager } from "./useWindowManager";
 import { Window } from "./Window";
@@ -9,39 +9,13 @@ import { ContextMenu, type MenuItem } from "./ContextMenu";
 import { useWallpaper } from "./WallpaperContext";
 import { MusicPlayer } from "./MusicPlayer";
 import { StickyNote } from "./StickyNote";
-
-const ICON_POS_KEY = "arwinos:iconpos";
-const ICON_COL_W = 96;
-const ICON_ROW_H = 88;
-
-type IconPos = Record<string, { x: number; y: number }>;
-
-function defaultIconPositions(ids: string[]): IconPos {
-  const viewportH = typeof window !== "undefined" ? window.innerHeight : 800;
-  const perCol = Math.max(1, Math.floor((viewportH - 180) / ICON_ROW_H));
-  const positions: IconPos = {};
-  ids.forEach((id, i) => {
-    const col = Math.floor(i / perCol);
-    const row = i % perCol;
-    positions[id] = { x: 16 + col * ICON_COL_W, y: 48 + row * ICON_ROW_H };
-  });
-  return positions;
-}
-
-function loadIconPositions(ids: string[]): IconPos {
-  const positions = defaultIconPositions(ids);
-  try {
-    const saved = JSON.parse(localStorage.getItem(ICON_POS_KEY) || "null");
-    if (saved && typeof saved === "object") {
-      for (const id of ids) {
-        if (saved[id] && typeof saved[id].x === "number") positions[id] = saved[id];
-      }
-    }
-  } catch {
-    // ignore malformed storage
-  }
-  return positions;
-}
+import {
+  defaultIconPositions,
+  hasSavedIconPositions,
+  ICON_POS_KEY,
+  loadIconPositions,
+  type IconPos,
+} from "./desktopIconLayout";
 
 export function Desktop() {
   const wm = useWindowManager(APP_MAP);
@@ -62,12 +36,26 @@ export function Desktop() {
 
   const desktopApps = APPS.filter((a) => a.onDesktop);
   const dockApps = APPS.filter((a) => a.inDock);
-
-  const [iconPos, setIconPos] = useState<IconPos>(() =>
-    loadIconPositions(desktopApps.map((a) => a.id)),
+  const desktopAppIds = useMemo(
+    () => APPS.filter((a) => a.onDesktop).map((a) => a.id),
+    [],
   );
 
+  const [iconPos, setIconPos] = useState<IconPos>(() => loadIconPositions(desktopAppIds));
+  const canPersistIcons = useRef(hasSavedIconPositions());
+
+  // First visit: re-layout once the real viewport size is known.
   useEffect(() => {
+    if (hasSavedIconPositions()) {
+      canPersistIcons.current = true;
+      return;
+    }
+    setIconPos(defaultIconPositions(desktopAppIds));
+    canPersistIcons.current = true;
+  }, [desktopAppIds]);
+
+  useEffect(() => {
+    if (!canPersistIcons.current) return;
     try {
       localStorage.setItem(ICON_POS_KEY, JSON.stringify(iconPos));
     } catch {
@@ -80,7 +68,7 @@ export function Desktop() {
 
   const resetDesktop = () => {
     wm.closeAll();
-    setIconPos(defaultIconPositions(desktopApps.map((a) => a.id)));
+    setIconPos(defaultIconPositions(desktopAppIds));
   };
 
   const openContextMenu = (e: React.MouseEvent) => {

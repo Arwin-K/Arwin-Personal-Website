@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { Icon } from "./Icon";
 import type { Origin } from "./types";
+import { DESKTOP_ICON_WIDTH } from "./desktopIconLayout";
 
 interface DesktopIconProps {
   icon: string;
@@ -10,8 +11,6 @@ interface DesktopIconProps {
   onMove: (x: number, y: number) => void;
 }
 
-const ICON_WIDTH = 92;
-
 export function DesktopIcon({ icon, label, pos, onOpen, onMove }: DesktopIconProps) {
   const [dragging, setDragging] = useState(false);
   const draggingRef = useRef(false);
@@ -19,7 +18,7 @@ export function DesktopIcon({ icon, label, pos, onOpen, onMove }: DesktopIconPro
   const startRef = useRef({ px: 0, py: 0, ox: 0, oy: 0 });
 
   const clamp = (x: number, y: number) => ({
-    x: Math.max(4, Math.min(x, window.innerWidth - ICON_WIDTH - 4)),
+    x: Math.max(4, Math.min(x, window.innerWidth - DESKTOP_ICON_WIDTH - 4)),
     y: Math.max(30, Math.min(y, window.innerHeight - 110)),
   });
 
