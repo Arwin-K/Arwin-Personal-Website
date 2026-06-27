@@ -21,6 +21,8 @@ const HOME_APP_IDS = [
 // Favorites pinned to the bottom dock.
 const DOCK_APP_IDS = ["about", "projects", "github", "contact"];
 
+const DESKTOP_HINT_KEY = "arwinos:phone-desktop-hint";
+
 // macOS-style app icon tints for the phone home screen.
 const TILE: Record<string, string> = {
   about: "linear-gradient(180deg, #5eb0ff, #007aff)",
@@ -218,6 +220,7 @@ export function PhoneOS() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [denied, setDenied] = useState(false);
+  const [showDesktopHint, setShowDesktopHint] = useState(false);
 
   const open = (id: string) => {
     if (!APP_MAP[id]) return;
@@ -226,6 +229,15 @@ export function PhoneOS() {
   };
   const close = () => setOpenId(null);
 
+  const dismissDesktopHint = () => {
+    setShowDesktopHint(false);
+    try {
+      sessionStorage.setItem(DESKTOP_HINT_KEY, "1");
+    } catch {
+      /* ignore storage failures */
+    }
+  };
+
   // Lock background scroll while an app is open.
   useEffect(() => {
     document.body.style.overflow = openId ? "hidden" : "";
@@ -233,6 +245,23 @@ export function PhoneOS() {
       document.body.style.overflow = "";
     };
   }, [openId]);
+
+  // Push-style banner once per session on phone.
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(DESKTOP_HINT_KEY)) return;
+    } catch {
+      /* ignore storage failures */
+    }
+    const showTimer = window.setTimeout(() => setShowDesktopHint(true), 700);
+    return () => window.clearTimeout(showTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!showDesktopHint) return;
+    const hideTimer = window.setTimeout(dismissDesktopHint, 5000);
+    return () => window.clearTimeout(hideTimer);
+  }, [showDesktopHint]);
 
   // Long-press anywhere on the home screen enters edit (jiggle) mode.
   const bgTimer = useRef<number | null>(null);
@@ -274,6 +303,23 @@ export function PhoneOS() {
       <div className="phone__scrim" />
 
       <StatusBar now={now} editing={editing} onDone={() => setEditing(false)} />
+
+      {showDesktopHint && (
+        <button
+          type="button"
+          className="phone__push"
+          onClick={dismissDesktopHint}
+          aria-label="Dismiss notification"
+        >
+          <span className="phone__pushicon">
+            <Icon name="about" size={22} />
+          </span>
+          <span className="phone__pushbody">
+            <span className="phone__pushtitle">Arwin OS</span>
+            <span className="phone__pushtext">This app is best experienced on Desktop</span>
+          </span>
+        </button>
+      )}
 
       <div
         className="phone__home"

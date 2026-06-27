@@ -9,6 +9,7 @@ import { PhotographyApp } from "./PhotographyApp";
 import { ContactApp } from "./ContactApp";
 import { DisplayApp } from "./DisplayApp";
 import { TrashApp } from "./TrashApp";
+import { TerminalApp } from "./TerminalApp";
 
 export const APPS: AppDef[] = [
   {
@@ -92,6 +93,16 @@ export const APPS: AppDef[] = [
     width: 440,
     height: 460,
     render: () => <ContactApp />,
+  },
+  {
+    id: "terminal",
+    title: "Terminal",
+    icon: "terminal",
+    onDesktop: true,
+    inDock: true,
+    width: 640,
+    height: 440,
+    render: ({ open }) => <TerminalApp open={open} />,
   },
   {
     id: "display",
