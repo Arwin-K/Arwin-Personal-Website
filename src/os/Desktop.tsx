@@ -106,8 +106,8 @@ export function Desktop() {
 
       {!booted && (
         <div className="boot">
-          <div className="boot__logo">▲</div>
-          <div className="boot__title">ArwinOS</div>
+          <div className="boot__logo">◯</div>
+          <div className="boot__title">Arwin</div>
           <div className="boot__bar">
             <div className="boot__fill" />
           </div>

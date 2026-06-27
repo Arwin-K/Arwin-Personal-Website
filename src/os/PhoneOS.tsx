@@ -21,18 +21,18 @@ const HOME_APP_IDS = [
 // Favorites pinned to the bottom dock.
 const DOCK_APP_IDS = ["about", "projects", "github", "contact"];
 
-// Per-app icon tile background so the home screen reads like iOS.
+// macOS-style app icon tints for the phone home screen.
 const TILE: Record<string, string> = {
-  about: "linear-gradient(160deg, #5b8cff, #2b4ed8)",
-  resume: "linear-gradient(160deg, #ff9d6c, #d8552b)",
-  projects: "linear-gradient(160deg, #ffd166, #e8a317)",
-  work: "linear-gradient(160deg, #59d98b, #1f9d55)",
-  github: "linear-gradient(160deg, #4b5563, #1f2430)",
-  basketball: "linear-gradient(160deg, #ff8a4c, #d44316)",
-  photography: "linear-gradient(160deg, #b18cff, #6c3bd8)",
-  contact: "linear-gradient(160deg, #4ec0ff, #1f7fd8)",
-  display: "linear-gradient(160deg, #9aa3b2, #5b6472)",
-  trash: "linear-gradient(160deg, #9aa3b2, #5b6472)",
+  about: "linear-gradient(180deg, #5eb0ff, #007aff)",
+  resume: "linear-gradient(180deg, #ff9f6b, #ff6723)",
+  projects: "linear-gradient(180deg, #ffd65e, #ff9f0a)",
+  work: "linear-gradient(180deg, #65d67a, #34c759)",
+  github: "linear-gradient(180deg, #8e8e93, #636366)",
+  basketball: "linear-gradient(180deg, #ff9f6b, #ff6723)",
+  photography: "linear-gradient(180deg, #bf8cff, #af52de)",
+  contact: "linear-gradient(180deg, #5eb0ff, #007aff)",
+  display: "linear-gradient(180deg, #aeaeb2, #8e8e93)",
+  trash: "linear-gradient(180deg, #aeaeb2, #8e8e93)",
 };
 
 function labelFor(app: AppDef) {

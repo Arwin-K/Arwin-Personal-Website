@@ -3,7 +3,6 @@ import { basketball } from "../data/hobbies";
 import { Icon } from "../os/Icon";
 
 const BEST_KEY = "arwinos:bball-best";
-// Sweet spot is centered at 50. Distance bands decide the outcome.
 const PERFECT = 4.5;
 const MAKE = 13;
 
@@ -15,7 +14,7 @@ export function BasketballApp() {
     const saved = typeof localStorage !== "undefined" ? localStorage.getItem(BEST_KEY) : null;
     return saved ? Number(saved) : 0;
   });
-  const [msg, setMsg] = useState("Hit the sweet spot to score");
+  const [msg, setMsg] = useState("Press Shoot when the marker is in the green zone.");
   const [flash, setFlash] = useState<"swish" | "make" | "miss" | null>(null);
   const [shot, setShot] = useState<{ id: number; result: "swish" | "make" | "miss" } | null>(null);
   const shotIdRef = useRef(0);
@@ -31,7 +30,6 @@ export function BasketballApp() {
     const loop = (t: number) => {
       const dt = Math.min(t - last, 50);
       last = t;
-      // Speed scales up with streak to ramp difficulty.
       const speed = (0.06 + Math.min(streakRef.current, 8) * 0.012) * dt;
       let next = posRef.current + dirRef.current * speed;
       if (next >= 100) {
@@ -61,19 +59,19 @@ export function BasketballApp() {
       setScore((s) => s + pts);
       streakRef.current += 1;
       setStreak(streakRef.current);
-      setMsg(`Swish! Nothing but net. +${pts} (x${streakRef.current})`);
+      setMsg(`Swish — +${pts} points.`);
     } else if (dist <= MAKE) {
       result = "make";
       const pts = 2;
       setScore((s) => s + pts);
       streakRef.current += 1;
       setStreak(streakRef.current);
-      setMsg(`Bucket! +${pts}`);
+      setMsg(`Made the shot — +${pts} points.`);
     } else {
       result = "miss";
       streakRef.current = 0;
       setStreak(0);
-      setMsg("Brick. Reset the streak and run it back.");
+      setMsg("Missed. Streak reset.");
     }
 
     setFlash(result);
@@ -86,7 +84,6 @@ export function BasketballApp() {
     }, 900);
   };
 
-  // Persist the best score whenever the running score sets a new record.
   useEffect(() => {
     setBest((b) => {
       if (score <= b) return b;
@@ -99,7 +96,6 @@ export function BasketballApp() {
     });
   }, [score]);
 
-  // Keyboard: space/enter to shoot.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.code === "Space" || e.code === "Enter") {
@@ -114,29 +110,37 @@ export function BasketballApp() {
 
   return (
     <div className="app hobby bball">
-      <div className="hobby__head">
-        <h2>
-          <span className="inlineico">
-            <Icon name="basketball" size={20} />
-          </span>
+      <div className="bball__toolbar">
+        <h2 className="bball__title">
+          <Icon name="basketball" size={18} />
           Basketball
         </h2>
-        <span className="badge">{basketball.favoriteTeam}</span>
       </div>
 
-      <div className={`bball__game ${flash ? `bball__game--${flash}` : ""}`}>
-        <div className="bball__scoreboard">
-          <div>
-            <span className="bball__score">{score}</span>
-            <span className="bball__scorelabel">PTS</span>
+      <div className="bball__group">
+        <div className="bball__row">
+          <span className="bball__rowlabel">Team</span>
+          <span className="bball__rowval">{basketball.favoriteTeam}</span>
+        </div>
+        <div className="bball__row">
+          <span className="bball__rowlabel">Favorite player</span>
+          <span className="bball__rowval">{basketball.favoritePlayer}</span>
+        </div>
+      </div>
+
+      <section className={`bball__game ${flash ? `bball__game--${flash}` : ""}`}>
+        <div className="bball__stats">
+          <div className="bball__stat">
+            <span className="bball__statnum">{score}</span>
+            <span className="bball__statlabel">Points</span>
           </div>
-          <div>
-            <span className="bball__score">{streak}</span>
-            <span className="bball__scorelabel">STREAK</span>
+          <div className="bball__stat">
+            <span className="bball__statnum">{streak}</span>
+            <span className="bball__statlabel">Streak</span>
           </div>
-          <div>
-            <span className="bball__score">{best}</span>
-            <span className="bball__scorelabel">BEST</span>
+          <div className="bball__stat">
+            <span className="bball__statnum">{best}</span>
+            <span className="bball__statlabel">Best</span>
           </div>
         </div>
 
@@ -163,33 +167,15 @@ export function BasketballApp() {
           <div className="meter__marker" style={{ left: `${pos}%` }} />
         </div>
 
-        <button className="bball__shoot" onClick={shoot}>
-          SHOOT
-        </button>
+        <div className="bball__actions">
+          <button className="bball__shoot" type="button" onClick={shoot}>
+            Shoot
+          </button>
+        </div>
+
         <p className="bball__msg">{msg}</p>
-        <p className="bball__hint">Click SHOOT (or press Space) when the marker hits the green.</p>
-      </div>
-
-      <div className="hobby__card">
-        <div className="kv">
-          <span>Favorite player</span>
-          <b>{basketball.favoritePlayer}</b>
-        </div>
-        <div className="kv">
-          <span>Position</span>
-          <b>{basketball.position}</b>
-        </div>
-        <div className="kv">
-          <span>Go-to move</span>
-          <b>{basketball.goToMove}</b>
-        </div>
-      </div>
-
-      <ul className="hobby__facts">
-        {basketball.facts.map((f, i) => (
-          <li key={i}>{f}</li>
-        ))}
-      </ul>
+        <p className="bball__hint">Space or Return also shoots.</p>
+      </section>
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { profile } from "../data/profile";
 import { useTheme } from "./ThemeContext";
 
 export function MenuBar() {
@@ -17,10 +16,11 @@ export function MenuBar() {
   return (
     <div className="menubar">
       <div className="menubar__left">
-        <span className="menubar__logo">▲ ArwinOS</span>
-        <span className="menubar__item menubar__item--bold">{profile.name}</span>
-        <span className="menubar__item menubar__hide-sm">About</span>
-        <span className="menubar__item menubar__hide-sm">Apps</span>
+        <span className="menubar__logo">Arwin</span>
+        <span className="menubar__item menubar__item--bold">File</span>
+        <span className="menubar__item menubar__hide-sm">Edit</span>
+        <span className="menubar__item menubar__hide-sm">View</span>
+        <span className="menubar__item menubar__hide-sm">Window</span>
         <span className="menubar__item menubar__hide-sm">Help</span>
       </div>
       <div className="menubar__right">

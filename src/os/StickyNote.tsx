@@ -10,8 +10,7 @@ export function StickyNote({ onOpen }: StickyNoteProps) {
       <div className="sticky__pin" />
       <p className="sticky__hi">Hey, I'm Arwin</p>
       <p className="sticky__text">
-        Welcome to my desktop. Double-click an icon to explore, or right-click anywhere to change
-        the wallpaper and theme.
+        Welcome. Double-click an icon to open an app, or right-click the desktop for display settings.
       </p>
       <div className="sticky__links">
         <button onClick={() => onOpen("projects")}>Projects</button>

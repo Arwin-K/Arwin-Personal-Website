@@ -1,13 +1,6 @@
 export const basketball = {
   favoriteTeam: "Toronto Raptors",
-  favoritePlayer: "Kobe Bryant",
-  position: "Combo guard",
-  goToMove: "Step-back three",
-  facts: [
-    "Raptors fan through every rebuild.",
-    "Mamba mentality applied to debugging at 2am.",
-    "Will argue that footwork is the most underrated skill in the game.",
-  ],
+  favoritePlayer: "Derrick Rose",
 };
 
 export interface Shot {
