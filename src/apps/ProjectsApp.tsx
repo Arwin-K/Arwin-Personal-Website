@@ -10,7 +10,7 @@ const FEATURED_REPOSITORIES = [
 ];
 const FEATURED_REPOSITORY_ORDER = new Map(FEATURED_REPOSITORIES.map((name, index) => [name, index]));
 
-function RepositoryCard({ repo }: { repo: GitHubRepo }) {
+function RepositoryCard({ repo, projectUrl }: { repo: GitHubRepo; projectUrl?: string }) {
   const documentationUrl = `${repo.html_url}/blob/${repo.default_branch}/README.md`;
 
   return (
@@ -31,6 +31,7 @@ function RepositoryCard({ repo }: { repo: GitHubRepo }) {
         <span>Updated {new Date(repo.updated_at).toLocaleDateString()}</span>
       </div>
       <div className="projectcard__actions">
+        {projectUrl && <a href={projectUrl}>Research article →</a>}
         <a href={repo.html_url} target="_blank" rel="noreferrer">Repository ↗</a>
         <a href={documentationUrl} target="_blank" rel="noreferrer">Documentation ↗</a>
         {repo.homepage && <a href={repo.homepage} target="_blank" rel="noreferrer">Live site ↗</a>}
@@ -69,7 +70,15 @@ export function ProjectsApp() {
       {featured.length > 0 && (
         <section>
           <h3 className="folder__section">Featured work</h3>
-          <div className="repolist">{featured.map((repo) => <RepositoryCard key={repo.id} repo={repo} />)}</div>
+          <div className="repolist">
+            {featured.map((repo) => (
+              <RepositoryCard
+                key={repo.id}
+                repo={repo}
+                projectUrl={repo.name === "CUDA-Attention-Softmax" ? "/cuda-research" : undefined}
+              />
+            ))}
+          </div>
         </section>
       )}
 

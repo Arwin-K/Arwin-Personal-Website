@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/cuda-research", "destination": "/cuda-research.html" },
+    { "source": "/cuda-research/", "destination": "/cuda-research.html" }
+  ]
+}

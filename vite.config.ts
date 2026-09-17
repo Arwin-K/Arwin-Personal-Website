@@ -33,4 +33,9 @@ function spotifyDevApi(): Plugin {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), spotifyDevApi()],
+  build: {
+    rollupOptions: {
+      input: ["index.html", "cuda-research.html"],
+    },
+  },
 });
