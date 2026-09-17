@@ -10,6 +10,7 @@ const HOME_APP_IDS = [
   "about",
   "resume",
   "projects",
+  "writing",
   "work",
   "github",
   "photography",
@@ -27,6 +28,7 @@ const TILE: Record<string, string> = {
   about: "linear-gradient(180deg, #5eb0ff, #007aff)",
   resume: "linear-gradient(180deg, #ff9f6b, #ff6723)",
   projects: "linear-gradient(180deg, #ffd65e, #ff9f0a)",
+  writing: "linear-gradient(180deg, #7f9fbc, #315f86)",
   work: "linear-gradient(180deg, #65d67a, #34c759)",
   github: "linear-gradient(180deg, #8e8e93, #636366)",
   photography: "linear-gradient(180deg, #bf8cff, #af52de)",
@@ -221,7 +223,8 @@ export function PhoneOS() {
   const [showDesktopHint, setShowDesktopHint] = useState(false);
 
   const open = (id: string) => {
-    if (!APP_MAP[id]) return;
+    const app = APP_MAP[id];
+    if (!app) return;
     setEditing(false);
     setOpenId(id);
   };

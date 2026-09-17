@@ -9,6 +9,7 @@ import { ContactApp } from "./ContactApp";
 import { DisplayApp } from "./DisplayApp";
 import { TrashApp } from "./TrashApp";
 import { TerminalApp } from "./TerminalApp";
+import { WritingApp } from "./WritingApp";
 
 export const APPS: AppDef[] = [
   {
@@ -41,6 +42,16 @@ export const APPS: AppDef[] = [
     width: 620,
     height: 560,
     render: () => <ProjectsApp />,
+  },
+  {
+    id: "writing",
+    title: "Writing",
+    icon: "notes",
+    onDesktop: true,
+    inDock: true,
+    width: 620,
+    height: 500,
+    render: () => <WritingApp />,
   },
   {
     id: "work",
