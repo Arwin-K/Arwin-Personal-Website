@@ -71,6 +71,15 @@ function ResultsTable({
   );
 }
 
+function CodeBlock({ label, children }: { label: string; children: string }) {
+  return (
+    <figure className="research-codeblock">
+      <figcaption>{label}</figcaption>
+      <pre><code>{children.trim()}</code></pre>
+    </figure>
+  );
+}
+
 export function CudaResearchPage() {
   const [theme, setTheme] = useState<ResearchTheme>(() => {
     const savedTheme = localStorage.getItem("cuda-research-theme");
@@ -253,13 +262,171 @@ export function CudaResearchPage() {
 
             <section id="profiling">
               <p className="research-section-label">06</p>
-              <h2>Profiler evidence</h2>
+              <h2>From source code to profiler evidence</h2>
               <p>
-                Nsight measurements at sequence length 512 reported 128 threads per block, 24 registers per thread, and 16 bytes of dynamic shared memory. Kernel duration was approximately 106.976–107.584 µs. Reported utilization reached 48.33–48.79% of peak DRAM throughput and 56.72–57.00% of peak SM throughput, suggesting neither a purely bandwidth-bound nor purely compute-bound explanation is sufficient on its own.
+                A profiler is most useful when its counters can be connected back to concrete source-level decisions. This section therefore follows one row through the final kernel before interpreting the measurements. The implementation uses a two-level reduction: threads first communicate inside their 32-lane warps through shuffle instructions, then one value per warp crosses a very small shared-memory bridge. The same pattern is used once for the row maximum and again for the softmax denominator.
               </p>
-              <Figure number={6} src="/projects/cuda-softmax/fig_profiler_breakdown.png" alt="PyTorch profiler device-time breakdown at sequence length 512" panoramic>
-                Stored PyTorch Profiler device-time breakdown at sequence length 512. The original artifact is panoramic; scroll horizontally or open it at full size to inspect the complete labeling.
-              </Figure>
+              <p>
+                This progression follows the same useful teaching order as Maharshi’s <a className="research-inline-link" href="https://maharshi.bearblog.dev/optimizing-softmax-cuda/" target="_blank" rel="noreferrer">softmax optimization worklog</a>—begin with ownership, expose parallel work, then replace full shared-memory reduction trees with warp shuffles—but the code and measurements below come from this project’s causal, scaled operator and preserved Tesla T4 run.
+              </p>
+
+              <h3 className="research-subheading">The kernel, step by step</h3>
+              <ol className="research-walkthrough">
+                <li>
+                  <h3>Assign one block to one softmax row</h3>
+                  <p>
+                    The grid contains one block for every flattened attention row. At the profiled sequence length, <code>rows = 8S = 4,096</code>, which explains Nsight’s 4,096-block grid. Inside each block, 128 threads cooperate on that row rather than leaving a single thread to scan it serially.
+                  </p>
+                  <CodeBlock label="Row ownership and causal boundary · fused_causal_softmax.cu">{`
+const int64_t row = static_cast<int64_t>(blockIdx.x);
+const int64_t query_position = row % sequence_length;
+const int64_t allowed_columns = query_position + 1;
+const int64_t thread_column = threadIdx.x;
+const int64_t column_stride = blockDim.x;`}</CodeBlock>
+                </li>
+                <li>
+                  <h3>Scale valid scores and materialize the mask</h3>
+                  <p>
+                    Thread <code>t</code> owns columns <code>t</code>, <code>t + blockDim.x</code>, and so on. Neighboring threads therefore begin with neighboring addresses, enabling coalesced global-memory accesses. Valid logits are multiplied by the attention scale and staged in the output tensor; future positions are written as exact zero. Reusing the output as scratch avoids separate scaled-score and mask tensors.
+                  </p>
+                  <CodeBlock label="Fused scaling and causal masking">{`
+for (int64_t column = thread_column; column < allowed_columns;
+     column += column_stride) {
+  probabilities[row_offset + column] =
+      scores[row_offset + column] * scale;
+}
+for (int64_t column = allowed_columns + thread_column;
+     column < sequence_length; column += column_stride) {
+  probabilities[row_offset + column] = 0.0f;
+}
+__syncthreads();`}</CodeBlock>
+                </li>
+                <li>
+                  <h3>Compute a private maximum in each thread</h3>
+                  <p>
+                    Every thread scans only its strided subset of permitted columns and keeps one partial maximum in a register. Register-local accumulation is the cheapest level of the reduction hierarchy: no communication is required until each thread has condensed its own work to one value.
+                  </p>
+                  <CodeBlock label="Register-local maximum">{`
+float thread_maximum = -CUDART_INF_F;
+for (int64_t column = thread_column; column < allowed_columns;
+     column += column_stride) {
+  thread_maximum = fmaxf(
+      thread_maximum, probabilities[row_offset + column]);
+}`}</CodeBlock>
+                </li>
+                <li>
+                  <h3>Reduce thread maxima inside each warp</h3>
+                  <p>
+                    A warp contains 32 lanes executing together. At offsets 16, 8, 4, 2, and 1, <code>__shfl_down_sync</code> transfers a register value from a neighboring lane. The number of candidates halves at every stage, so lane 0 reaches the warp maximum in five shuffle steps without a shared-memory write and block-wide barrier at every step.
+                  </p>
+                  <CodeBlock label="Warp-level maximum reduction">{`
+__device__ __forceinline__ float warp_reduce_max(float value) {
+  for (int offset = 16; offset > 0; offset >>= 1) {
+    value = fmaxf(
+        value, __shfl_down_sync(0xffffffffu, value, offset));
+  }
+  return __shfl_sync(0xffffffffu, value, 0);
+}`}</CodeBlock>
+                </li>
+                <li>
+                  <h3>Bridge four warp results into one block maximum</h3>
+                  <p>
+                    A 128-thread block contains four warps. Only lane 0 of each warp publishes its result, so shared memory stores four floats—not 128. After one block barrier, the first warp loads those four values, substitutes negative infinity in unused lanes, and runs the same shuffle reduction again. Lane 0 writes the completed row maximum to <code>shared_values[0]</code> for the entire block.
+                  </p>
+                  <CodeBlock label="Compact cross-warp bridge">{`
+const float warp_maximum = warp_reduce_max(thread_maximum);
+extern __shared__ float shared_values[];
+if (lane == 0) shared_values[warp] = warp_maximum;
+__syncthreads();
+
+if (warp == 0) {
+  float block_maximum = lane < warps_per_block
+      ? shared_values[lane] : -CUDART_INF_F;
+  block_maximum = warp_reduce_max(block_maximum);
+  if (lane == 0) shared_values[0] = block_maximum;
+}
+__syncthreads();`}</CodeBlock>
+                </li>
+                <li>
+                  <h3>Form stable exponentials and partial denominators</h3>
+                  <p>
+                    Each valid staged score subtracts the completed row maximum before exponentiation. The largest exponential is consequently one, which prevents overflow without changing the final probability distribution. Threads overwrite their staged scores with exponentials and accumulate private denominator contributions in registers.
+                  </p>
+                  <CodeBlock label="Numerically stable exponential pass">{`
+float thread_exponential_sum = 0.0f;
+for (int64_t column = thread_column; column < allowed_columns;
+     column += column_stride) {
+  const int64_t index = row_offset + column;
+  const float shifted = probabilities[index] - row_maximum;
+  const float exponential = expf(shifted);
+  probabilities[index] = exponential;
+  thread_exponential_sum += exponential;
+}`}</CodeBlock>
+                </li>
+                <li>
+                  <h3>Reduce the denominator with the same hierarchy</h3>
+                  <p>
+                    The denominator uses addition instead of maximum, but its communication pattern is identical: a shuffle sum within each warp, one partial written by every warp leader, then a final sum in warp 0. Reusing <code>shared_values</code> keeps the dynamic shared-memory requirement at four floats.
+                  </p>
+                  <CodeBlock label="Two-level denominator reduction">{`
+const float warp_sum = warp_reduce_sum(thread_exponential_sum);
+if (lane == 0) shared_values[warp] = warp_sum;
+__syncthreads();
+
+if (warp == 0) {
+  float block_sum = lane < warps_per_block
+      ? shared_values[lane] : 0.0f;
+  block_sum = warp_reduce_sum(block_sum);
+  if (lane == 0) shared_values[0] = block_sum;
+}
+__syncthreads();`}</CodeBlock>
+                </li>
+                <li>
+                  <h3>Normalize valid positions and launch on PyTorch’s stream</h3>
+                  <p>
+                    Threads revisit their original strided columns and divide each exponential by the shared denominator. Masked positions remain zero and never enter either reduction. On the host, the launch requests one block per row, the selected thread count, and one float of dynamic shared memory per warp; it runs on PyTorch’s current CUDA stream and checks for immediate launch errors.
+                  </p>
+                  <CodeBlock label="Final normalization and launch geometry">{`
+for (int64_t column = thread_column; column < allowed_columns;
+     column += column_stride) {
+  probabilities[row_offset + column] /= shared_values[0];
+}
+
+const int blocks = static_cast<int>(rows);
+const int threads = static_cast<int>(block_size);
+const size_t shared_bytes =
+    (threads / 32) * sizeof(float);
+fused_causal_softmax_kernel<<<
+    blocks, threads, shared_bytes, stream>>>(/* arguments */);`}</CodeBlock>
+                </li>
+              </ol>
+
+              <h3 className="research-subheading">What the profilers actually measured</h3>
+              <p>
+                Two profilers answer different questions. PyTorch Profiler records operator and kernel time in the surrounding framework workload; Nsight Compute instruments the selected CUDA kernel and reports launch resources and hardware counters. Their timings are close, but they should not be merged with the 100-sample benchmark medians because profiling changes the measurement conditions.
+              </p>
+
+              <dl className="research-profiler-evidence">
+                <div><dt>PyTorch Profiler · fused kernel</dt><dd><strong>110.207 µs</strong><span>One custom-kernel event at S = 512</span></dd></div>
+                <div><dt>PyTorch Profiler · custom explicit attention</dt><dd><strong>505.565 µs</strong><span>Two matrix multiplications plus the custom softmax path</span></dd></div>
+                <div><dt>PyTorch Profiler · eager explicit attention</dt><dd><strong>1,095.195 µs</strong><span>Separate scale, mask, softmax, and matrix operations</span></dd></div>
+                <div><dt>PyTorch Profiler · SDPA</dt><dd><strong>408.222 µs</strong><span>Production fused attention baseline</span></dd></div>
+                <div><dt>Nsight Compute · launch</dt><dd><strong>4,096 × 128</strong><span>Blocks × threads; four warps per row</span></dd></div>
+                <div><dt>Nsight Compute · resources</dt><dd><strong>24 registers/thread · 16 B shared</strong><span>Four shared floats agree with one partial per warp</span></dd></div>
+                <div><dt>Nsight Compute · duration</dt><dd><strong>106.976–107.584 µs</strong><span>Four captured launches, including three warmups</span></dd></div>
+                <div><dt>Nsight Compute · throughput</dt><dd><strong>48.33–48.79% DRAM · 56.72–57.00% SM</strong><span>Percent of the profiler’s peak-throughput reference</span></dd></div>
+              </dl>
+
+              <div className="research-evidence-reading">
+                <h3>How to read this evidence</h3>
+                <p><strong>Measured:</strong> launch geometry, resource use, duration, and throughput percentages come directly from the preserved exports.</p>
+                <p><strong>Supported interpretation:</strong> 16 bytes of shared memory is exactly four FP32 values, consistent with the source storing one partial for each of four warps.</p>
+                <p><strong>Not established:</strong> the throughput percentages alone do not prove that the kernel is exclusively memory-bound or compute-bound. A stronger causal claim requires matched counters for the shared-tree and warp versions across more shapes and GPU architectures.</p>
+              </div>
+
+              <p className="research-artifact-links">
+                Audit the underlying evidence: <a href={`${RUN}/artifacts/profiler/pytorch_profiler_events.csv`} target="_blank" rel="noreferrer">PyTorch event CSV</a>, <a href={`${RUN}/artifacts/profiler/pytorch_profiler_trace.json`} target="_blank" rel="noreferrer">Chrome trace</a>, <a href={`${RUN}/artifacts/profiler/nsight/ncu_raw_export.csv`} target="_blank" rel="noreferrer">Nsight raw export</a>, and <a href={`${REPO}/blob/main/csrc/fused_causal_softmax.cu`} target="_blank" rel="noreferrer">complete CUDA source</a>.
+              </p>
             </section>
 
             <section id="limitations">

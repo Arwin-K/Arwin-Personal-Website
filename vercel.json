@@ -1,6 +1,10 @@
 {
+  "redirects": [
+    { "source": "/cuda-research", "destination": "/cuda-optimization-softmax", "permanent": true },
+    { "source": "/cuda-research/", "destination": "/cuda-optimization-softmax", "permanent": true }
+  ],
   "rewrites": [
-    { "source": "/cuda-research", "destination": "/cuda-research.html" },
-    { "source": "/cuda-research/", "destination": "/cuda-research.html" }
+    { "source": "/cuda-optimization-softmax", "destination": "/cuda-research.html" },
+    { "source": "/cuda-optimization-softmax/", "destination": "/cuda-research.html" }
   ]
 }

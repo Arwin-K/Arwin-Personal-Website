@@ -75,7 +75,7 @@ export function ProjectsApp() {
               <RepositoryCard
                 key={repo.id}
                 repo={repo}
-                projectUrl={repo.name === "CUDA-Attention-Softmax" ? "/cuda-research" : undefined}
+                projectUrl={repo.name === "CUDA-Attention-Softmax" ? "/cuda-optimization-softmax" : undefined}
               />
             ))}
           </div>

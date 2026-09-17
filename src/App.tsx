@@ -9,7 +9,7 @@ export default function App() {
   const isMobile = useIsMobile();
   const pathname = window.location.pathname.replace(/\/$/, "") || "/";
 
-  if (pathname === "/cuda-research") {
+  if (pathname === "/cuda-optimization-softmax") {
     return <CudaResearchPage />;
   }
 
