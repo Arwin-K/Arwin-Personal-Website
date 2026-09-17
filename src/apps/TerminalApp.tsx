@@ -212,8 +212,6 @@ const OPEN_APPS: Record<string, string> = {
   projects: "projects",
   work: "work",
   github: "github",
-  basketball: "basketball",
-  bball: "basketball",
   photo: "photography",
   photography: "photography",
   contact: "contact",

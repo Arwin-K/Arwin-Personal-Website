@@ -1,8 +1,3 @@
-export const basketball = {
-  favoriteTeam: "Toronto Raptors",
-  favoritePlayer: "Derrick Rose",
-};
-
 export interface Shot {
   src: string;
   caption: string;

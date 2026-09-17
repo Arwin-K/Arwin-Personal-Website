@@ -4,7 +4,6 @@ import { ResumeApp } from "./ResumeApp";
 import { ProjectsApp } from "./ProjectsApp";
 import { WorkApp } from "./WorkApp";
 import { GitHubApp } from "./GitHubApp";
-import { BasketballApp } from "./BasketballApp";
 import { PhotographyApp } from "./PhotographyApp";
 import { ContactApp } from "./ContactApp";
 import { DisplayApp } from "./DisplayApp";
@@ -63,16 +62,6 @@ export const APPS: AppDef[] = [
     width: 560,
     height: 560,
     render: () => <GitHubApp />,
-  },
-  {
-    id: "basketball",
-    title: "Basketball",
-    icon: "basketball",
-    onDesktop: true,
-    inDock: true,
-    width: 460,
-    height: 560,
-    render: () => <BasketballApp />,
   },
   {
     id: "photography",
