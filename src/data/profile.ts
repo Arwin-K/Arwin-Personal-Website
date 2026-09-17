@@ -3,7 +3,6 @@ export const profile = {
   tagline: "Computer Engineering @ University of Toronto",
   location: "Toronto, ON, Canada",
   email: "karirarwin@gmail.com",
-  phone: "647-741-7010",
   githubUser: "Arwin-K",
   github: "https://github.com/Arwin-K",
   linkedin: "https://linkedin.com/in/arwin-karir",
@@ -13,7 +12,7 @@ export const profile = {
   instagram: "https://www.instagram.com/arwin_karir/",
   instagramHandle: "arwin_karir",
   blurb:
-    "Hey, I'm Arwin - a Computer Engineering student at the University of Toronto (PEY Co-op) who likes building things that ship. I work across full-stack web, machine learning, and edge/computer-vision systems. Off the keyboard you'll find me on the basketball court, behind a camera, or buried in a comic.",
+    "I am a Computer Engineering student at the University of Toronto pursuing PEY Co-op opportunities. My work spans full-stack web development, machine learning, and edge computer-vision systems, with an emphasis on practical, well-engineered products.",
   education: {
     school: "University of Toronto",
     degree: "BASc in Computer Engineering (PEY Co-op)",

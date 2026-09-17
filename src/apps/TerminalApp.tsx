@@ -120,12 +120,12 @@ function helpOutput(): TermLine[] {
     "  open <app>    launch a desktop app",
     "  clear         clear the screen",
     "  neofetch      system summary",
-    "  fortune       wisdom from the OS",
+    "  fortune       display a system message",
     "  pwd           print working directory",
     "  date          current date & time",
     "  echo <text>   print text",
     "",
-    "Try: cat secrets.txt · open github · sudo rm -rf /",
+    "Try: cat about.md · open projects · open github",
   ]);
 }
 
@@ -141,9 +141,7 @@ function lsOutput(): TermLine[] {
         part("  "),
         part("projects/", "term-blue"),
         part("  "),
-        part("secrets.txt", "term-red"),
-        part("  "),
-        part("taking_over_the_world.txt", "term-dim"),
+        part("contact.md", "term-blue"),
       ],
     },
   ];
@@ -154,11 +152,8 @@ function catFile(name: string): TermLine[] {
   if (file === "about" || file === "about.md") {
     return linesFromStrings([profile.blurb]);
   }
-  if (file === "secrets" || file === "secrets.txt") {
-    return linesFromStrings(["nice try.", "hint: check the Trash."], "err");
-  }
-  if (file === "taking_over_the_world" || file === "taking_over_the_world.txt") {
-    return linesFromStrings(["[REDACTED]"]);
+  if (file === "contact" || file === "contact.md") {
+    return linesFromStrings([profile.email]);
   }
   if (file === "resume" || file === "resume.pdf") {
     return linesFromStrings(["Binary file — open the Resume app instead."]);
@@ -197,11 +192,11 @@ function neofetchOutput(): TermLine[] {
 
 function fortuneOutput(): TermLine[] {
   const quotes = [
-    "Ship early. Debug at 2am with confidence.",
-    "The ball don't lie. Neither does the linter.",
-    "There is no cloud — only Arwin's Vercel functions.",
-    "rm -rf / is not a personality trait.",
-    "Today's forecast: 100% chance of git push.",
+    "Well-documented work is easier to maintain and evaluate.",
+    "Reliable systems are built through deliberate testing.",
+    "Clear communication is a core engineering skill.",
+    "Measure outcomes, then improve the implementation.",
+    "Small, consistent improvements compound over time.",
   ];
   return linesFromStrings([quotes[Math.floor(Math.random() * quotes.length)]!]);
 }
@@ -262,11 +257,11 @@ function runCommand(raw: string, open: AppRenderApi["open"]): TermLine[] {
       return linesFromStrings(["Password: ", "sudo: 3 incorrect password attempts"], "err");
     case "rm":
       if (trimmed.includes("-rf") || trimmed.includes("-fr")) {
-        return linesFromStrings(["rm: Permission denied. Arwin still needs this website."], "err");
+      return linesFromStrings(["rm: permission denied in this simulated environment."], "err");
       }
       return linesFromStrings([`rm: missing operand`], "err");
     case "git":
-      return linesFromStrings(["fatal: not a git repository (but nice try)."], "err");
+      return linesFromStrings(["fatal: not a git repository."], "err");
     case "cd":
       return linesFromStrings([`cd: ${arg || "~"}: No such directory in Arwin OS`], "err");
     case "vim":
@@ -274,10 +269,10 @@ function runCommand(raw: string, open: AppRenderApi["open"]): TermLine[] {
       return linesFromStrings([`${cmd}: editing disabled. use cat instead.`], "err");
     case "exit":
     case "quit":
-      return linesFromStrings(["There is no escape. Only more portfolio."]);
+      return linesFromStrings(["Session closed."]);
     case "hi":
     case "hello":
-      return linesFromStrings([`Hey. You're on ${profile.name}'s machine.`]);
+      return linesFromStrings([`Welcome to ${profile.name}'s portfolio.`]);
     case "arwin":
       return linesFromStrings([
         `${profile.name} — ${profile.tagline}`,

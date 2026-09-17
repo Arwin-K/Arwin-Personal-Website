@@ -5,7 +5,7 @@ export function WorkApp() {
   return (
     <div className="app work">
       <p className="work__intro">
-        Roles I've held, with the full rundown of what I worked on at each.
+        Professional experience and selected contributions.
       </p>
       {work.map((item) => (
         <article key={item.id} className="doc work__item">

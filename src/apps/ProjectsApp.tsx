@@ -1,87 +1,81 @@
-import { useState } from "react";
-import { featuredProjects, type FeaturedProject } from "../data/projects";
-import { useGitHubRepos } from "../hooks/useGitHub";
+import { useMemo } from "react";
+import { useGitHubRepos, type GitHubRepo } from "../hooks/useGitHub";
 import { Icon } from "../os/Icon";
 
-export function ProjectsApp() {
-  const [selected, setSelected] = useState<FeaturedProject | null>(null);
-  const { repos, loading, error } = useGitHubRepos();
+const FEATURED_REPOSITORIES = new Set([
+  "LumiSense",
+  "Fake-News-Detection",
+  "CUDA-Attention-Softmax",
+  "sellstatic-website",
+]);
 
-  if (selected) {
-    return (
-      <div className="app folder">
-        <button className="folder__back" onClick={() => setSelected(null)}>
-          ← Projects
-        </button>
-        <div className="doc">
-          <div className="doc__head">
-            <Icon name="file" size={30} />
-            <div>
-              <h2 className="doc__title">{selected.name}</h2>
-              <p className="doc__meta">{selected.dates}</p>
-            </div>
-          </div>
-          <div className="chips chips--tight">
-            {selected.stack.map((s) => (
-              <span key={s} className="chip">
-                {s}
-              </span>
-            ))}
-          </div>
-          <p className="doc__blurb">{selected.blurb}</p>
-          <ul className="doc__list">
-            {selected.bullets.map((b, i) => (
-              <li key={i}>{b}</li>
-            ))}
-          </ul>
-          {selected.repo && (
-            <a className="btn btn--primary" href={selected.repo} target="_blank" rel="noreferrer">
-              View on GitHub →
-            </a>
-          )}
-        </div>
-      </div>
-    );
-  }
+function RepositoryCard({ repo }: { repo: GitHubRepo }) {
+  const documentationUrl = `${repo.html_url}/blob/${repo.default_branch}/README.md`;
 
   return (
-    <div className="app folder">
-      <p className="folder__hint">Featured builds — double-click for the full rundown.</p>
-      <div className="folder__grid">
-        {featuredProjects.map((p) => (
-          <button key={p.id} className="fileitem" onClick={() => setSelected(p)}>
-            <Icon name="file" size={40} />
-            <span className="fileitem__name">{p.name}</span>
-            <span className="fileitem__meta">{p.stack[0]}</span>
-          </button>
-        ))}
+    <article className="repocard projectcard">
+      <div className="repocard__top">
+        <a className="repocard__name" href={repo.html_url} target="_blank" rel="noreferrer">
+          {repo.name}
+        </a>
+        <span className="repocard__star">
+          <Icon name="star" size={13} /> {repo.stargazers_count}
+        </span>
+      </div>
+      <p className="repocard__desc">
+        {repo.description ?? "Project documentation and source code are available on GitHub."}
+      </p>
+      <div className="repocard__meta">
+        {repo.language && <span className="dotlang">● {repo.language}</span>}
+        <span>Updated {new Date(repo.updated_at).toLocaleDateString()}</span>
+      </div>
+      <div className="projectcard__actions">
+        <a href={repo.html_url} target="_blank" rel="noreferrer">Repository ↗</a>
+        <a href={documentationUrl} target="_blank" rel="noreferrer">Documentation ↗</a>
+        {repo.homepage && <a href={repo.homepage} target="_blank" rel="noreferrer">Live site ↗</a>}
+      </div>
+    </article>
+  );
+}
+
+export function ProjectsApp() {
+  const { repos, loading, error } = useGitHubRepos();
+  const { featured, remaining } = useMemo(() => {
+    const active = repos.filter((repo) => !repo.fork && !repo.archived);
+    return {
+      featured: active.filter((repo) => FEATURED_REPOSITORIES.has(repo.name)),
+      remaining: active.filter((repo) => !FEATURED_REPOSITORIES.has(repo.name)),
+    };
+  }, [repos]);
+
+  return (
+    <div className="app folder projects">
+      <div className="projects__intro">
+        <div>
+          <h2>Projects</h2>
+          <p>Selected engineering work and public repositories, synchronized directly from GitHub.</p>
+        </div>
+        <a className="btn btn--primary" href="https://github.com/Arwin-K" target="_blank" rel="noreferrer">
+          GitHub profile ↗
+        </a>
       </div>
 
-      <h3 className="folder__section">
-        <span className="inlineico">
-          <Icon name="github" size={18} />
-        </span>
-        Live from GitHub
-      </h3>
-      {loading && <p className="muted">Loading repositories…</p>}
-      {error && <p className="muted">Couldn't reach GitHub right now. Try the GitHub app or my profile directly.</p>}
-      <div className="repolist">
-        {repos.map((r) => (
-          <a key={r.id} className="repocard" href={r.html_url} target="_blank" rel="noreferrer">
-            <div className="repocard__top">
-              <span className="repocard__name">{r.name}</span>
-              <span className="repocard__star">
-                <Icon name="star" size={13} /> {r.stargazers_count}
-              </span>
-            </div>
-            {r.description && <p className="repocard__desc">{r.description}</p>}
-            <div className="repocard__meta">
-              {r.language && <span className="dotlang">● {r.language}</span>}
-              <span>Updated {new Date(r.updated_at).toLocaleDateString()}</span>
-            </div>
-          </a>
-        ))}
-      </div>
+      {loading && <p className="muted">Loading repositories from GitHub…</p>}
+      {error && <p className="muted">GitHub is temporarily unavailable. Please visit the GitHub profile to view the current project list.</p>}
+
+      {featured.length > 0 && (
+        <section>
+          <h3 className="folder__section">Featured work</h3>
+          <div className="repolist">{featured.map((repo) => <RepositoryCard key={repo.id} repo={repo} />)}</div>
+        </section>
+      )}
+
+      {remaining.length > 0 && (
+        <section>
+          <h3 className="folder__section">Additional repositories</h3>
+          <div className="repolist">{remaining.map((repo) => <RepositoryCard key={repo.id} repo={repo} />)}</div>
+        </section>
+      )}
     </div>
   );
 }

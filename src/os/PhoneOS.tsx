@@ -314,7 +314,7 @@ export function PhoneOS() {
           </span>
           <span className="phone__pushbody">
             <span className="phone__pushtitle">Arwin OS</span>
-            <span className="phone__pushtext">This app is best experienced on Desktop</span>
+            <span className="phone__pushtext">For the full experience, view this site on a desktop browser.</span>
           </span>
         </button>
       )}
@@ -365,7 +365,7 @@ export function PhoneOS() {
       {denied && (
         <div className="phone__alert-wrap" onClick={() => setDenied(false)}>
           <div className="phone__alert" onClick={(e) => e.stopPropagation()}>
-            <div className="phone__alert-title">no</div>
+            <div className="phone__alert-title">Application removal is unavailable.</div>
             <button className="phone__alert-ok" onClick={() => setDenied(false)}>
               OK
             </button>

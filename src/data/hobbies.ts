@@ -6,10 +6,10 @@ export interface Shot {
 export const photography = {
   instagramUrl: "https://www.instagram.com/karir.visuals/",
   instagramHandle: "@karir.visuals",
-  gear: "Mostly my phone + an eye for golden hour",
-  style: ["Golden-hour landscapes", "Nature", "Everyday moments"],
+  gear: "Selected work",
+  style: ["Landscape", "Nature", "Everyday moments"],
   shots: [
-    { src: "/photos/bike-sunset.png", caption: "Golden hour ride" },
+    { src: "/photos/bike-sunset.png", caption: "Evening ride" },
     { src: "/photos/field-sunset.png", caption: "Sunset over the field" },
     { src: "/photos/maligne-lake.png", caption: "Maligne Lake, Jasper" },
     { src: "/photos/hoop-dusk.png", caption: "Court at dusk" },

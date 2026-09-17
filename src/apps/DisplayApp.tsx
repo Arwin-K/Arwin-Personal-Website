@@ -50,7 +50,7 @@ export function DisplayApp() {
       </div>
 
       <p className="muted display__note">
-        Pick a wallpaper above — your choice is saved for next time.
+        Your wallpaper preference is saved for future visits.
       </p>
     </div>
   );

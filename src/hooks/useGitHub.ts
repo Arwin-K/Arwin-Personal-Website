@@ -20,10 +20,13 @@ export interface GitHubRepo {
   description: string | null;
   html_url: string;
   language: string | null;
+  default_branch: string;
   stargazers_count: number;
   forks_count: number;
   updated_at: string;
   fork: boolean;
+  archived: boolean;
+  homepage: string | null;
 }
 
 const API = "https://api.github.com";

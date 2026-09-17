@@ -4,9 +4,9 @@ import { Icon } from "../os/Icon";
 export function ContactApp() {
   return (
     <div className="app contact">
-      <h2 className="contact__title">Let's build something</h2>
+      <h2 className="contact__title">Get in touch</h2>
       <p className="muted">
-        Open to internships, collaborations, and pickup games. The fastest way to reach me is email.
+        I welcome internship, collaboration, and project inquiries. Email is the best way to reach me.
       </p>
       <div className="contact__list">
         <a className="contact__row" href={`mailto:${profile.email}`}>
@@ -16,15 +16,6 @@ export function ContactApp() {
           <div>
             <span className="contact__label">Email</span>
             <span className="contact__val">{profile.email}</span>
-          </div>
-        </a>
-        <a className="contact__row" href={`tel:${profile.phone}`}>
-          <span className="contact__ic">
-            <Icon name="phone" size={26} />
-          </span>
-          <div>
-            <span className="contact__label">Phone</span>
-            <span className="contact__val">{profile.phone}</span>
           </div>
         </a>
         <a className="contact__row" href={profile.linkedin} target="_blank" rel="noreferrer">

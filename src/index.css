@@ -752,6 +752,45 @@ a {
   padding: 0 0 12px;
 }
 
+.projects__intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.projects__intro h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.projects__intro p {
+  max-width: 390px;
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.projectcard__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 11px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.projectcard__actions a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.projectcard__actions a:hover {
+  text-decoration: underline;
+}
+
 /* ---------- Doc ---------- */
 .doc__head {
   display: flex;
@@ -1813,6 +1852,9 @@ a {
   }
   .github__stats {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .projects__intro {
+    flex-direction: column;
   }
   .photo__grid {
     grid-template-columns: repeat(2, 1fr);

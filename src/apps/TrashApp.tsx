@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Icon } from "../os/Icon";
 
-const FILE_NAME = "taking over the world.txt";
+const FILE_NAME = "archived-notes.txt";
 
 const FILE_BODY = `[REDACTED]`;
 
@@ -31,7 +31,7 @@ export function TrashApp() {
         </span>
         Trash
       </h2>
-      <p className="muted trash__hint">One item — probably best left deleted.</p>
+      <p className="muted trash__hint">One archived item.</p>
       <div className="trash__list">
         <button className="fileitem" onClick={() => setOpen(true)}>
           <Icon name="notes" size={40} />

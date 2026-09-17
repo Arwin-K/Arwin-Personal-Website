@@ -40,7 +40,7 @@ export function MusicPlayer() {
               <i />
               <i />
             </span>
-            {playing ? "Now playing" : "Arwin's Spotify"}
+            {playing ? "Now playing" : "Spotify"}
           </div>
           <a
             className="music__title"
