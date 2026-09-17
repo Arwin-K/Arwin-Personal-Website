@@ -104,8 +104,7 @@ export function CudaResearchPage() {
             onClick={() => setTheme((current) => current === "light" ? "dark" : "light")}
             aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
           >
-            <span aria-hidden="true">{theme === "light" ? "☾" : "☀"}</span>
-            {theme === "light" ? "Dark" : "Light"}
+            {theme === "light" ? "Dark mode" : "Light mode"}
           </button>
         </nav>
       </header>

@@ -1554,17 +1554,17 @@ a {
 
 /* ---------- CUDA research article ---------- */
 .research-page {
-  --research-ink: #1d1e1b;
-  --research-muted: #65665f;
-  --research-secondary: #4e4f49;
-  --research-body: #353631;
-  --research-rule: #d8d7d0;
-  --research-paper: #fbfaf7;
-  --research-code: #eeede8;
-  --research-code-panel: #20231f;
-  --research-code-ink: #eef1eb;
+  --research-ink: #111111;
+  --research-muted: #686868;
+  --research-secondary: #3f3f3f;
+  --research-body: #292929;
+  --research-rule: #d6d6d3;
+  --research-paper: #fcfcfa;
+  --research-code: #eeeeeb;
+  --research-code-panel: #171717;
+  --research-code-ink: #f2f2ef;
   --research-figure: #fff;
-  --research-accent: #315f86;
+  --research-accent: #111111;
   width: 100%;
   height: 100%;
   min-height: 100vh;
@@ -1580,17 +1580,17 @@ a {
 }
 
 .research-page[data-research-theme="dark"] {
-  --research-ink: #edeee9;
-  --research-muted: #a2a69e;
-  --research-secondary: #c2c5be;
-  --research-body: #d5d7d1;
-  --research-rule: #393d37;
-  --research-paper: #171916;
-  --research-code: #282b27;
-  --research-code-panel: #0f110f;
-  --research-code-ink: #eef1eb;
-  --research-figure: #f4f4f1;
-  --research-accent: #8db9df;
+  --research-ink: #f1f1ee;
+  --research-muted: #a5a5a2;
+  --research-secondary: #c5c5c2;
+  --research-body: #d8d8d4;
+  --research-rule: #3c3c3a;
+  --research-paper: #141414;
+  --research-code: #292929;
+  --research-code-panel: #080808;
+  --research-code-ink: #f1f1ee;
+  --research-figure: #f7f7f5;
+  --research-accent: #f1f1ee;
   color-scheme: dark;
 }
 
@@ -1598,7 +1598,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(1180px, calc(100% - 48px));
+  width: min(980px, calc(100% - 48px));
   height: 70px;
   margin: 0 auto;
   border-bottom: 1px solid var(--research-rule);
@@ -1628,7 +1628,6 @@ a {
 .research-theme-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -1638,15 +1637,7 @@ a {
 }
 
 .research-theme-toggle:hover {
-  color: var(--research-accent);
-}
-
-.research-theme-toggle span {
-  width: 15px;
-  color: inherit;
-  font-size: 15px;
-  line-height: 1;
-  text-align: center;
+  color: var(--research-ink);
 }
 
 .research-site-header a:hover,
@@ -1664,30 +1655,30 @@ a {
 
 .research-kicker {
   margin: 0 0 22px;
-  color: var(--research-accent);
+  color: var(--research-muted);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .research-hero h1 {
-  max-width: 900px;
+  max-width: 830px;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: clamp(44px, 7vw, 76px);
-  font-weight: 720;
-  line-height: 0.98;
-  letter-spacing: -0.055em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6vw, 62px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
 }
 
 .research-subtitle {
-  max-width: 810px;
-  margin: 30px 0 0;
+  max-width: 760px;
+  margin: 27px 0 0;
   color: var(--research-secondary);
-  font-size: clamp(20px, 2.4vw, 27px);
-  line-height: 1.42;
+  font-size: clamp(19px, 2.2vw, 23px);
+  line-height: 1.5;
   letter-spacing: -0.012em;
 }
 
@@ -1707,8 +1698,8 @@ a {
 
 .research-layout {
   display: grid;
-  grid-template-columns: 160px minmax(0, 720px);
-  gap: 76px;
+  grid-template-columns: 140px minmax(0, 720px);
+  gap: 70px;
   width: min(980px, calc(100% - 48px));
   margin: 0 auto;
   padding: 74px 0 120px;
@@ -1747,7 +1738,7 @@ a {
 
 .research-article section {
   scroll-margin-top: 36px;
-  margin-top: 96px;
+  margin-top: 84px;
 }
 
 .research-article section:first-child {
@@ -1756,11 +1747,11 @@ a {
 
 .research-article h2 {
   margin: 0 0 25px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: clamp(27px, 4vw, 38px);
-  font-weight: 680;
-  line-height: 1.14;
-  letter-spacing: -0.035em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(25px, 3.4vw, 32px);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
 }
 
 .research-article p,
@@ -1784,7 +1775,7 @@ a {
 
 .research-section-label {
   margin-bottom: 12px !important;
-  color: var(--research-accent);
+  color: var(--research-muted);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 11px !important;
   font-weight: 800;
@@ -1811,8 +1802,9 @@ a {
 
 .research-summary {
   margin-top: 46px !important;
-  padding: 30px 0 30px 32px;
-  border-left: 3px solid var(--research-accent);
+  padding: 25px 0;
+  border-top: 1px solid var(--research-ink);
+  border-bottom: 1px solid var(--research-rule);
 }
 
 .research-summary h2 {
@@ -1865,7 +1857,7 @@ a {
   margin: 44px 0;
   padding: 4px 0 4px 28px;
   border-left: 2px solid var(--research-ink);
-  font-size: 23px;
+  font-size: 21px;
   font-style: italic;
   line-height: 1.55;
 }
@@ -1918,7 +1910,7 @@ a {
   top: 24px;
   left: 0;
   content: "0" counter(stages);
-  color: var(--research-accent);
+  color: var(--research-muted);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 11px;
   font-weight: 800;
@@ -1976,7 +1968,7 @@ a {
 .research-callout > span {
   display: block;
   margin-bottom: 9px;
-  color: var(--research-accent);
+  color: var(--research-muted);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 10px;
   font-weight: 800;
@@ -2031,7 +2023,7 @@ a {
 }
 
 .research-inline-link {
-  color: var(--research-accent);
+  color: var(--research-ink);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
@@ -2065,7 +2057,7 @@ a {
   top: 36px;
   left: 0;
   content: "0" counter(walkthrough);
-  color: var(--research-accent);
+  color: var(--research-muted);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 11px;
   font-weight: 800;
@@ -2089,7 +2081,7 @@ a {
 .research-codeblock {
   margin: 24px 0 0;
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 2px;
   background: var(--research-code-panel);
 }
 
@@ -2168,8 +2160,9 @@ a {
 
 .research-evidence-reading {
   margin: 44px 0 32px;
-  padding: 28px 30px 22px;
-  border: 1px solid var(--research-rule);
+  padding: 24px 0 17px;
+  border-top: 1px solid var(--research-ink);
+  border-bottom: 1px solid var(--research-rule);
 }
 
 .research-evidence-reading h3 {
@@ -2193,7 +2186,7 @@ a {
 }
 
 .research-artifact-links a {
-  color: var(--research-accent);
+  color: var(--research-ink);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -2228,9 +2221,10 @@ a {
 }
 
 .research-links a {
-  color: var(--research-accent);
+  color: var(--research-ink);
   font-weight: 650;
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .research-links a:hover {
@@ -2249,7 +2243,7 @@ a {
 .research-footer {
   display: flex;
   justify-content: space-between;
-  width: min(1180px, calc(100% - 48px));
+  width: min(980px, calc(100% - 48px));
   margin: 0 auto;
   padding: 28px 0 44px;
   border-top: 1px solid var(--research-rule);
