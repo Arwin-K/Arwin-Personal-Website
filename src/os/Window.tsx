@@ -72,9 +72,11 @@ export function Window({
   };
 
   const startResize = (e: React.PointerEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     if (state.maximized) return;
     onFocus();
+    e.currentTarget.setPointerCapture(e.pointerId);
     resizeRef.current = { sx: e.clientX, sy: e.clientY, sw: state.width, sh: state.height };
   };
 
@@ -146,7 +148,15 @@ export function Window({
       </div>
       <div className="window__body">{children}</div>
       {opening && <div className="window__opencover" />}
-      {!state.maximized && <div className="window__resize" onPointerDown={startResize} />}
+      {!state.maximized && (
+        <div
+          className="window__resize"
+          onPointerDown={startResize}
+          role="separator"
+          aria-label="Resize window"
+          title="Drag to resize"
+        />
+      )}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Icon } from "../os/Icon";
 
-const FILE_NAME = "archived-notes.txt";
+const FILE_NAME = "taking-over-the-world.txt";
 
 const FILE_BODY = `[REDACTED]`;
 
