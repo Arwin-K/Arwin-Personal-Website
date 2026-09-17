@@ -2,12 +2,13 @@ import { useMemo } from "react";
 import { useGitHubRepos, type GitHubRepo } from "../hooks/useGitHub";
 import { Icon } from "../os/Icon";
 
-const FEATURED_REPOSITORIES = new Set([
+const FEATURED_REPOSITORIES = [
+  "CUDA-Attention-Softmax",
   "LumiSense",
   "Fake-News-Detection",
-  "CUDA-Attention-Softmax",
-  "sellstatic-website",
-]);
+  "Stock-Price-Volatility-Comparison",
+];
+const FEATURED_REPOSITORY_ORDER = new Map(FEATURED_REPOSITORIES.map((name, index) => [name, index]));
 
 function RepositoryCard({ repo }: { repo: GitHubRepo }) {
   const documentationUrl = `${repo.html_url}/blob/${repo.default_branch}/README.md`;
@@ -43,8 +44,10 @@ export function ProjectsApp() {
   const { featured, remaining } = useMemo(() => {
     const active = repos.filter((repo) => !repo.fork && !repo.archived);
     return {
-      featured: active.filter((repo) => FEATURED_REPOSITORIES.has(repo.name)),
-      remaining: active.filter((repo) => !FEATURED_REPOSITORIES.has(repo.name)),
+      featured: active
+        .filter((repo) => FEATURED_REPOSITORY_ORDER.has(repo.name))
+        .sort((a, b) => FEATURED_REPOSITORY_ORDER.get(a.name)! - FEATURED_REPOSITORY_ORDER.get(b.name)!),
+      remaining: active.filter((repo) => !FEATURED_REPOSITORY_ORDER.has(repo.name)),
     };
   }, [repos]);
 
