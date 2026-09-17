@@ -1096,6 +1096,35 @@ a {
 }
 
 /* ---------- Photography ---------- */
+.photo__instagram {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 12px;
+  padding: 9px 11px;
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.photo__instagram:hover {
+  border-color: var(--accent);
+}
+
+.photo__instagram strong {
+  font-size: 13px;
+}
+
+.photo__instagram-arrow {
+  margin-left: auto;
+  color: var(--accent);
+  font-size: 16px;
+  line-height: 1;
+}
+
 .photo__note {
   font-size: 12px;
   margin: 10px 0;

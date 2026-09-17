@@ -4,6 +4,8 @@ export interface Shot {
 }
 
 export const photography = {
+  instagramUrl: "https://www.instagram.com/karir.visuals/",
+  instagramHandle: "@karir.visuals",
   gear: "Mostly my phone + an eye for golden hour",
   style: ["Golden-hour landscapes", "Nature", "Everyday moments"],
   shots: [

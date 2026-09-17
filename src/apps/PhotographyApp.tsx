@@ -18,6 +18,17 @@ export function PhotographyApp() {
         <span className="badge">{photography.gear}</span>
       </div>
 
+      <a
+        className="photo__instagram"
+        href={photography.instagramUrl}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span>Instagram</span>
+        <strong>{photography.instagramHandle}</strong>
+        <span className="photo__instagram-arrow" aria-hidden="true">↗</span>
+      </a>
+
       <div className="chips chips--tight">
         {photography.style.map((s) => (
           <span key={s} className="chip">
