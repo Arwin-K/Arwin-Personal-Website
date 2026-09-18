@@ -5,7 +5,7 @@ export function AboutApp() {
   return (
     <div className="app about">
       <div className="about__hero">
-        <div className="about__avatar">AK</div>
+        <img className="about__avatar" src="/arwin-headshot.png" alt="Arwin Karir" />
         <div>
           <h1 className="about__name">{profile.name}</h1>
           <p className="about__tag">{profile.tagline}</p>
@@ -35,17 +35,10 @@ export function AboutApp() {
       </div>
 
       <div className="about__card">
-        <h3>Technical stacks</h3>
-        <p className="about__stackintro">
-          Centered on product engineering at SellStatic, with systems and ML work from my research projects.
-        </p>
         <div className="about__stacks">
           {profile.stacks.map((stack) => (
             <section key={stack.name} className="about__stack">
-              <div>
-                <h4>{stack.name}</h4>
-                <p>{stack.context}</p>
-              </div>
+              <h3>{stack.name}</h3>
               <div className="about__stackgrid">
                 {stack.items.map((item) => (
                   <div key={item.name} className="about__stackitem" title={item.name}>

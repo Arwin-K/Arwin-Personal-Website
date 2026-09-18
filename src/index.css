@@ -603,12 +603,9 @@ a {
   width: 64px;
   height: 64px;
   border-radius: 14px;
-  display: grid;
-  place-items: center;
-  font-weight: 600;
-  font-size: 22px;
-  color: #fff;
-  background: var(--accent);
+  display: block;
+  object-fit: cover;
+  object-position: center 30%;
   flex-shrink: 0;
 }
 
@@ -676,13 +673,6 @@ a {
   letter-spacing: 0.03em;
 }
 
-.about__stackintro {
-  margin: -2px 0 16px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.5;
-}
-
 .about__stacks {
   display: grid;
   gap: 18px;
@@ -698,20 +688,16 @@ a {
   border-top: 0;
 }
 
-.about__stack h4 {
+.about__stack h3 {
   margin: 0;
   font-size: 12px;
   font-weight: 700;
-}
-
-.about__stack > div > p {
-  margin: 3px 0 11px;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.45;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .about__stackgrid {
+  margin-top: 11px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   gap: 7px;
@@ -3024,6 +3010,10 @@ a {
   font-weight: 600;
 }
 
+.github__card--contributions {
+  background: var(--panel-2);
+}
+
 .github__contrib {
   display: block;
 }
@@ -3032,6 +3022,10 @@ a {
   display: block;
   width: 100%;
   height: auto;
+}
+
+:root[data-theme="dark"] .github__contrib img {
+  filter: brightness(1.45);
 }
 
 .langrow {

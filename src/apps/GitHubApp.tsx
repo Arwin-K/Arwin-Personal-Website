@@ -1,8 +1,10 @@
 import { useGitHubUser, useGitHubRepos, languageBreakdown } from "../hooks/useGitHub";
 import { profile } from "../data/profile";
 import { Icon } from "../os/Icon";
+import { useTheme } from "../os/ThemeContext";
 
 export function GitHubApp() {
+  const { theme } = useTheme();
   const { user, loading, error } = useGitHubUser();
   const { repos } = useGitHubRepos();
   const langs = languageBreakdown(repos).slice(0, 6);
@@ -48,7 +50,7 @@ export function GitHubApp() {
         <Stat n={totalStars} label="Stars" />
       </div>
 
-      <div className="github__card">
+      <div className="github__card github__card--contributions">
         <h3>Contributions</h3>
         <a
           className="github__contrib"
@@ -57,7 +59,11 @@ export function GitHubApp() {
           rel="noreferrer"
         >
           <img
-            src={`https://ghchart.rshah.org/2f7d3a/${user.login}`}
+            src={
+              theme === "dark"
+                ? `https://ghchart.xqsit94.in/dark:2f7d3a/${user.login}`
+                : `https://ghchart.rshah.org/2f7d3a/${user.login}`
+            }
             alt={`${user.login} GitHub contribution chart`}
             loading="lazy"
           />

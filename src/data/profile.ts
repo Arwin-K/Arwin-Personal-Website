@@ -12,17 +12,16 @@ export const profile = {
   instagram: "https://www.instagram.com/arwin_karir/",
   instagramHandle: "arwin_karir",
   blurb:
-    "I am a Computer Engineering student at the University of Toronto pursuing PEY Co-op opportunities. My work spans full-stack web development, machine learning, and edge computer-vision systems, with an emphasis on practical, well-engineered products.",
+    "I am a second-year Computer Engineering student at the University of Toronto pursuing PEY Co-op opportunities. My work spans full-stack web development, machine learning, and edge computer-vision systems, with an emphasis on practical, well-engineered products.",
   education: {
     school: "University of Toronto",
     degree: "BASc in Computer Engineering (PEY Co-op)",
     location: "Toronto, ON",
-    dates: "Sept. 2025 - May 2030",
+    dates: "Sept. 2025 - May 2029",
   },
   stacks: [
     {
-      name: "AI product engineering",
-      context: "Primary focus at SellStatic: interactive AI-video tools, persistent workflows, asynchronous delivery, and production QA.",
+      name: "Web development stacks",
       items: [
         { name: "React", logo: "https://cdn.simpleicons.org/react/61DAFB" },
         { name: "TypeScript", logo: "https://cdn.simpleicons.org/typescript/3178C6" },
@@ -33,7 +32,6 @@ export const profile = {
     },
     {
       name: "GPU and applied ML systems",
-      context: "CUDA research, computer vision, and edge inference work across the CUDA Softmax and LumiSense projects.",
       items: [
         { name: "Python", logo: "https://cdn.simpleicons.org/python/3776AB" },
         { name: "PyTorch", logo: "https://cdn.simpleicons.org/pytorch/EE4C2C" },
