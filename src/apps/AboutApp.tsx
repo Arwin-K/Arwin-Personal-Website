@@ -35,24 +35,28 @@ export function AboutApp() {
       </div>
 
       <div className="about__card">
-        <h3>
-          <span className="inlineico">
-            <Icon name="skills" size={20} />
-          </span>
-          Skills
-        </h3>
-        {Object.entries(profile.skills).map(([group, items]) => (
-          <div key={group} className="about__skillgroup">
-            <span className="about__skilllabel">{group}</span>
-            <div className="chips">
-              {items.map((s) => (
-                <span key={s} className="chip">
-                  {s}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
+        <h3>Technical stacks</h3>
+        <p className="about__stackintro">
+          Centered on product engineering at SellStatic, with systems and ML work from my research projects.
+        </p>
+        <div className="about__stacks">
+          {profile.stacks.map((stack) => (
+            <section key={stack.name} className="about__stack">
+              <div>
+                <h4>{stack.name}</h4>
+                <p>{stack.context}</p>
+              </div>
+              <div className="about__stackgrid">
+                {stack.items.map((item) => (
+                  <div key={item.name} className="about__stackitem" title={item.name}>
+                    <img src={item.logo} alt="" width="24" height="24" />
+                    <span>{item.name}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
       </div>
     </div>
   );
